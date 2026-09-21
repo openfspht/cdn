@@ -1,0 +1,28 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          submodules: true
+      - name: build
+        run: docker build -t cdn:ci .
+      - name: smoke test
+        run: |
+          docker run -d -p 8080:8080 cdn:ci
+          for _ in $(seq 1 20); do
+            curl -sf http://localhost:8080/health && break
+            sleep 0.5
+          done
+          curl -sf http://localhost:8080/discover.json > /dev/null
+          curl -sf http://localhost:8080/logo/openfsp-logo.svg > /dev/null
