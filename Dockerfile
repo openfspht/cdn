@@ -3,8 +3,6 @@ FROM ${BASE_IMAGE}
 
 ENV BASE_FQDN=openfsp.org
 
-# The submodule stores sources by format, logo/ and png/. The CDN serves them by
-# asset instead, so a URL names what the file is and not how it was produced.
 COPY --chown=65534:65534 art/logo/openfsp-logo*.svg     /public/logo/
 COPY --chown=65534:65534 art/logo/openfsp-mark*.svg     /public/mark/
 COPY --chown=65534:65534 art/logo/openfsp-wordmark*.svg /public/wordmark/
