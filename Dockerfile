@@ -1,5 +1,4 @@
-ARG BASE_IMAGE=ghcr.io/karakosystems/karako-cdn:1
-FROM ${BASE_IMAGE}
+FROM ghcr.io/karakosystems/karako-cdn:1.0.2@sha256:ab47c918a35870e171f01a3038162208a38b40001fd77029dcc07e74b175e2e8
 
 ENV BASE_FQDN=openfsp.org
 
