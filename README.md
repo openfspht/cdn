@@ -26,3 +26,7 @@ docker build -t openfsp-cdn . && docker run -p 8080:8080 openfsp-cdn
 ```
 
 The image is published on GHCR (`ghcr.io/openfspht/cdn`) and Docker Hub (`openfsp/cdn`).
+
+## License
+
+[Apache-2.0](LICENSE). The OpenFSP name and marks are not licensed: see [NOTICE](NOTICE).
