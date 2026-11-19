@@ -20,6 +20,12 @@ https://cdn.openfsp.org/mark/openfsp-mark-256.png
 
 Files are cached for a year: change an asset on purpose or not at all.
 
+`validate.sh` runs the conformance suite against a server with the validator image, Docker being the only requirement:
+
+```sh
+curl -fsSL https://cdn.openfsp.org/validate.sh | sh -s -- https://api.example.com
+```
+
 ```sh
 git submodule update --remote art     # take the latest art
 docker build -t openfsp-cdn . && docker run -p 8080:8080 openfsp-cdn

@@ -13,3 +13,5 @@ COPY --chown=65534:65534 art/png/mark/     /public/mark/
 COPY --chown=65534:65534 art/png/wordmark/ /public/wordmark/
 COPY --chown=65534:65534 art/png/avatar/   /public/avatar/
 COPY --chown=65534:65534 art/png/favicon/  /public/favicon/
+
+COPY --chown=65534:65534 public/ /public/
