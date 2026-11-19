@@ -8,7 +8,8 @@ usage() {
 Usage: curl -fsSL https://cdn.openfsp.org/validate.sh | sh -s -- <base-url> [options]
 
 Runs the OpenFSP conformance suite against <base-url> and prints the report.
-Requires Docker. A localhost or 127.0.0.1 address reaches the server running on this machine.
+Requires Docker. A localhost or 127.0.0.1 address reaches the server running on this machine through
+the host network (Docker Desktop: Settings, Resources, Network, enable host networking).
 
 Options are those of the validator (--help lists them), for example:
   --api-key <key>            key of the conformance account
@@ -31,7 +32,7 @@ publish() {
     case "$1" in
         '' | *[!0-9]*) fail "--webhook-port takes a port number" ;;
     esac
-    printf -- '-p %s:%s' "$1" "$1"
+    [ "$2" = host ] || printf -- '-p %s:%s' "$1" "$1"
 }
 
 main() {
@@ -43,25 +44,24 @@ main() {
     esac
     command -v docker > /dev/null 2>&1 || fail "Docker is required: https://docs.docker.com/get-docker/" 69
 
-    target="$1"
-    shift
-    case "$target" in
-        http://localhost* | https://localhost* | http://127.0.0.1* | https://127.0.0.1*)
-            target=$(printf '%s' "$target" | sed -E 's#^(https?://)(localhost|127\.0\.0\.1)#\1host.docker.internal#')
+    flags="--rm --pull=missing"
+    network=""
+    case "$1" in
+        http://localhost[:/]* | https://localhost[:/]* | http://localhost | https://localhost | \
+            http://127.0.0.1[:/]* | https://127.0.0.1[:/]* | http://127.0.0.1 | https://127.0.0.1)
+            network=host
+            flags="$flags --network host"
             ;;
     esac
-
-    set -- "$target" "$@"
-    flags="--rm --pull=missing --add-host=host.docker.internal:host-gateway"
     previous=""
     workdir=""
     for argument in "$@"; do
         case "$previous" in
-            --webhook-port) flags="$flags $(publish "$argument")" ;;
+            --webhook-port) flags="$flags $(publish "$argument" "$network")" ;;
             --report) workdir=$(pwd) ;;
         esac
         case "$argument" in
-            --webhook-port=*) flags="$flags $(publish "${argument#*=}")" ;;
+            --webhook-port=*) flags="$flags $(publish "${argument#*=}" "$network")" ;;
             --report=*) workdir=$(pwd) ;;
         esac
         previous="$argument"
