@@ -5,7 +5,7 @@ IMAGE="${OPENFSP_VALIDATOR_IMAGE:-ghcr.io/openfspht/validator:${OPENFSP_VALIDATO
 
 usage() {
     cat <<'USAGE'
-Usage: sh validate.sh <base-url> [options]
+Usage: curl -fsSL https://cdn.openfsp.org/validate.sh | sh -s -- <base-url> [options]
 
 Runs the OpenFSP conformance suite against <base-url> and prints the report.
 Requires Docker. A localhost or 127.0.0.1 address reaches the server running on this machine through
