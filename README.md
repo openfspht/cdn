@@ -22,7 +22,7 @@ Files are cached for a year: change an asset on purpose or not at all.
 `validate.sh` runs the conformance suite against a server with the validator image, Docker being the only requirement:
 
 ```sh
-curl -fsSL https://cdn.openfsp.org/validate.sh | sh -s -- https://api.example.com
+curl -fsSLO https://cdn.openfsp.org/validate.sh && sh validate.sh https://api.example.com
 ```
 
 ```sh
