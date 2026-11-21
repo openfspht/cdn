@@ -2,6 +2,7 @@
 set -eu
 # shellcheck disable=SC3040
 if (set -o pipefail) 2>/dev/null; then set -o pipefail; fi
+if [ -n "${ZSH_VERSION:-}" ]; then setopt sh_word_split; fi
 
 IMAGE="${OPENFSP_VALIDATOR_IMAGE:-ghcr.io/openfspht/validator:${OPENFSP_VALIDATOR_VERSION:-0.5.0}}"
 
